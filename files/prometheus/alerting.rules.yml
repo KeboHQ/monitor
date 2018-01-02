@@ -1,0 +1,44 @@
+# Prometheus Kebo Alerting Rules
+
+# Example Rule
+#groups:
+#- name: example
+#  rules:
+#  - alert: HighErrorRate
+#    expr: job:request_latency_seconds:mean5m{job="myjob"} > 0.5
+#    for: 10m
+#    labels:
+#      severity: page
+#    annotations:
+#      summary: High request latency
+
+groups:
+
+- name: service_failure
+  rules:
+
+  - alert: WebsiteFailure
+    expr: probe_success{job="blackbox"} != 1
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website {{ $labels.instance }} is down."
+
+  - alert: ServiceFailure
+    expr: up == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Service {{ $labels.job }} is down."
+      description: "The service {{ $labels.job }} at {{ $labels.instance }} has been down for more than 5 minutes."
+
+- name: ssl_expiry
+  rules:
+
+  - alert: SSLCertExpiringSoon
+    expr: probe_ssl_earliest_cert_expiry{job="blackbox"} - time() < 86400 * 10
+    for: 10m
+    annotations:
+      summary: "SSL Certificate for {{ $labels.instance }} expires in 10 days."
