@@ -1,0 +1,9 @@
+# Blackbox Config
+
+modules:
+  http_2xx:
+    prober: http
+    http:
+      headers:
+        Host: hera.kebo.io
+      preferred_ip_protocol: "ip4"
