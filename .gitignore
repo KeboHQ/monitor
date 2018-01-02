@@ -1,0 +1,10 @@
+# Ignore Envrionment Variable File with Secrets
+.env
+
+# Ignore Certificate Files
+/accounts/
+/certificates/
+/certs/
+
+# Ignore Backup Archives
+/backups/

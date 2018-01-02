@@ -1,0 +1,86 @@
+# Docker Compose for Prometheus and Blackbox Exporter
+
+version: '3'
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+    certificate_data: {}
+
+services:
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    volumes:
+     - ./files/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./files/nginx/sites:/etc/nginx/vhost.d:ro
+     - certificate_data:/etc/nginx/certs:ro
+    ports:
+     - 80:80
+     - 443:443
+    restart: always
+
+  prom:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+     - prometheus_data:/data
+     - ./files/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+     - 9090:9090
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    volumes:
+     - ./files/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml
+    command:
+      - '-config.file=/etc/alertmanager/config.yml'
+      - '-storage.path=/alertmanager'
+    ports:
+     - 9093:9093
+    restart: always
+
+  blackbox:
+    image: prom/blackbox-exporter
+    container_name: blackbox
+    volumes:
+     - ./files/blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml
+    ports:
+     - 9115:9115
+    restart: always
+
+  node:
+    image: prom/node-exporter
+    container_name: node
+    volumes:
+     - /proc:/host/proc:ro
+     - /sys:/host/sys:ro
+     - /:/rootfs:ro
+    command: 
+     - '--path.procfs=/host/proc' 
+     - '--path.sysfs=/host/sys'
+     - --collector.filesystem.ignored-mount-points
+     - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+     - 9100:9100
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+     - grafana_data:/var/lib/grafana
+     - ./files/grafana/grafana.ini:/etc/grafana/grafana.ini
+    ports:
+     - 3000:3000
+    restart: always
+
+networks:
+  default:
+    external:
+      name: ${NETWORK}
+  
+  
