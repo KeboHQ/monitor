@@ -1,12 +1,10 @@
 # Monitoring
 
-This uses on Docker to setup Kebo's monitoring and alerting system including- [Prometheus](https://prometheus.io/docs/introduction/overview/) (plus node and blackbox exporters), [AlertManager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/), [NGINX](https://www.nginx.com/) and [Certbot](https://certbot.eff.org/).
-
-Nginx and Certbot are used to provide the relevant HTTP based services and automate SSL certificate provision.
+This uses on Docker to setup Kebo's monitoring and alerting system including- [Prometheus](https://prometheus.io/docs/introduction/overview/) (plus node and blackbox exporters), [AlertManager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and [NGINX](https://www.nginx.com/). [Lego](https://github.com/KeboHQ/monitor) is used externally to obtain/renew [Lets Encrypt](https://letsencrypt.org/) SSL certificates.
 
 ## Requirements
 
-The setup requires some secret details (API Keys, Passwords, etc) which are provided by a separate .env file containing the secret details in environment variables. These are used by the configuration files where needed.
+The setup requires various secret details (API Keys, Passwords, etc) which are provided by a separate .env file. These are used by several configuration files where needed.
 
 The host machine you will be deploying the services to must have [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed.
 
@@ -20,13 +18,7 @@ To update an existing service `docker-compose up -d --no-deps --build [service-n
 
 ## Backing up Data
 
-There are two data volumes `prometheus_data` and `grafana_data`, which need to be persisted to maintain state. The following commands can be used to backup and restore the volumes.
-
-Backup:
-`docker run -it -v [volume_name]:/volume -v /tmp:/backup alpine \ tar -cjf /backup/[volume_name].tar.bz2 -C /volume ./`
-
-Restore:
-`docker run -it -v [volume_name]:/volume -v /tmp:/backup alpine \ sh -c "rm -rf /volume/* ; tar -C /volume/ -xjf /backup/[volume_name].tar.bz2"`
+There are three data volumes `prometheus_data`, `grafana_data` and `certificate_data`, which need to be persisted to maintain state. The following commands can be used to backup and restore the volumes. The `certificate_data` volume must be created before
 
 ## Purpose
 
