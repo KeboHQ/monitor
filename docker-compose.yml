@@ -12,6 +12,10 @@ services:
   nginx:
     image: nginx:stable-alpine
     container_name: nginx
+    depends_on:
+     - prometheus
+     - alertmanager
+     - grafana
     volumes:
      - ./files/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
      - ./files/nginx/sites:/etc/nginx/vhost.d:ro
@@ -22,9 +26,12 @@ services:
      - 443:443
     restart: always
 
-  prom:
+  prometheus:
     image: prom/prometheus
     container_name: prometheus
+    depends_on:
+     - blackbox
+     - node
     volumes:
      - prometheus_data:/data
      - ./files/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
