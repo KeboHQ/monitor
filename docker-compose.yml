@@ -15,6 +15,7 @@ services:
     volumes:
      - ./files/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
      - ./files/nginx/sites:/etc/nginx/vhost.d:ro
+     - ./files/nginx/shared/secure.conf:/etc/nginx/snippets/secure.conf:ro
      - certificate_data:/etc/nginx/certs:ro
     ports:
      - 80:80
