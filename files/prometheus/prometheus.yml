@@ -40,7 +40,9 @@ scrape_configs:
     - https://www.kebo.io
     - https://link.kebo.io
     - https://www.peterbooker.com
+    # Use External Sites as Baseline
     - https://www.clorith.net
+    - http://www.bbc.co.uk/news
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
