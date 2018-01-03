@@ -2,9 +2,7 @@
 .env
 
 # Ignore Certificate Files
-/accounts/
-/certificates/
-/certs/
+/lego/
 
 # Ignore Backup Archives
 /backups/
