@@ -9,7 +9,7 @@ global:
   smtp_auth_username: ${KEBO_ADMIN_EMAIL_USER}
   smtp_auth_password: ${KEBO_ADMIN_EMAIL_PASS}
   # The default SMTP TLS requirement.
-  smtp_require_tls: 'true'
+  smtp_require_tls: true
 
   # The API URL to use for Slack notifications.
   slack_api_url: ${SLACK_API_URL}
