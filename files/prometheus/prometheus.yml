@@ -37,10 +37,10 @@ scrape_configs:
   static_configs:
   - targets:
     # Targets to probe
-    - www.kebo.io
-    - link.kebo.io
-    - www.peterbooker.com
-    - www.clorith.net
+    - https://www.kebo.io
+    - https://link.kebo.io
+    - https://www.peterbooker.com
+    - https://www.clorith.net
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
