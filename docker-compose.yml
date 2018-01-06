@@ -34,7 +34,7 @@ services:
      - node
     volumes:
      - prometheus_data:/data
-     - ./files/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+     - ./confd/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
      - 9090:9090
     restart: always
@@ -45,7 +45,7 @@ services:
     depends_on:
      - prometheus
     volumes:
-     - ./files/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml
+     - ./confd/configs/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
