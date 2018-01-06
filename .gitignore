@@ -6,3 +6,6 @@
 
 # Ignore Backup Archives
 /backups/
+
+# Ignore Generated Config Files
+/confd/configs/
