@@ -1,0 +1,13 @@
+[template]
+src = "alertmanager/alertmanager.yml"
+dest = "/etc/confd/configs/alertmanager/alertmanager.yml"
+keys = [
+  "KEBO_EMAIL_HOST",
+  "KEBO_EMAIL_PORT",
+  "KEBO_ADMIN_EMAIL_USER",
+  "KEBO_ADMIN_EMAIL_PASS",
+  "KEBO_SUPPORT_EMAIL_USER",
+  "KEBO_SUPPORT_EMAIL_PASS",
+  "SLACK_API_URL",
+  "SLACK_API_CHANNEL",
+]
