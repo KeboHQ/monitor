@@ -1,6 +1,6 @@
 [template]
-src = "alertmanager/alertmanager.yml"
-dest = "/etc/confd/configs/alertmanager/alertmanager.yml"
+src = "alertmanager.yml"
+dest = "/etc/confd/configs/alertmanager.yml"
 keys = [
   "KEBO_EMAIL_HOST",
   "KEBO_EMAIL_PORT",
