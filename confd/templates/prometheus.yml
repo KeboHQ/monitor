@@ -49,7 +49,7 @@ scrape_configs:
 
 alerting:
   alertmanagers:
-  - scheme: https
+  - scheme: http
     static_configs:
     - targets:
-      - alertmanager:9093
+      - "alertmanager:9093"
