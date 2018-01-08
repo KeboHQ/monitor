@@ -8,8 +8,8 @@ global:
     monitor: kebo
 
 rule_files:
-- "recording.rules.yml"
-- "alerting.rules.yml"
+- "recording.rules"
+- "alerting.rules"
 
 scrape_configs:
 
