@@ -4,7 +4,7 @@ modules:
   http_2xx:
     prober: http
     http:
-      valid_status_codes: ["2xx"]
+      valid_status_codes: "2xx"
       valid_http_versions: ["HTTP/1.1", "HTTP/2"]
       method: "GET"
       headers:
