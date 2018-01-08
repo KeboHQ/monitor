@@ -35,6 +35,8 @@ services:
     volumes:
      - prometheus_data:/data
      - ./confd/configs/prometheus.yml:/etc/prometheus/prometheus.yml
+     - ./files/prometheus/recording.rules:/etc/prometheus/recording.rules
+     - ./files/prometheus/alerting.rules:/etc/prometheus/alerting.rules
     ports:
      - 9090:9090
     restart: always
