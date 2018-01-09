@@ -65,8 +65,8 @@ route:
     receiver: team-admin-mails
 
   - match:
-    severity: critical
-  receiver: team-admin-mails
+      severity: critical
+    receiver: team-admin-mails
 
   - match:
       severity: critical
