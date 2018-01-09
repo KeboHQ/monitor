@@ -61,8 +61,12 @@ route:
     #  receiver: team-X-pager
 
   - match:
-      service: files
+      service: WebsiteFailure
     receiver: team-admin-mails
+
+  - match:
+      service: WebsiteFailure
+    receiver: slack_monitoring
 
     #routes:
     #- match:
