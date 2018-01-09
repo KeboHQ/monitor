@@ -44,8 +44,6 @@ services:
   alertmanager:
     image: prom/alertmanager
     container_name: alertmanager
-    depends_on:
-     - prometheus
     volumes:
      - ./confd/configs/alertmanager.yml:/etc/alertmanager/config.yml
     command:
