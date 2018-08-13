@@ -8,4 +8,5 @@
 /backups/
 
 # Ignore Generated Config Files
-/confd/configs/
+/confd/configs/prometheus/prometheus.yml
+/confd/configs/alertmanager/alertmanager.yml

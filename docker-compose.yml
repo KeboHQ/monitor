@@ -9,20 +9,22 @@ volumes:
 services:
   traefik:
     image: traefik:1.7-alpine
-    command: --api --docker
+    command: --api --docker --acme.storage=/etc/traefik/acme.json
     container_name: traefik
+    labels:
+     - "traefik.frontend.rule=Host:proxy.kebo.io"
+     - "traefik.enable=true"
+     - "traefik.port=8080"
     depends_on:
      - prometheus
      - alertmanager
      - grafana
     volumes:
-     - ./files/traefik/traefik.toml:/traefik.toml:ro
-     - ./files/traefik/acme.json:/acme.json
+     - ./files/traefik/:/etc/traefik/
      - /var/run/docker.sock:/var/run/docker.sock
     ports:
      - 80:80
      - 443:443
-     - "5001:443" # Needed for SNI challenge
     expose:
      - "8080"
     restart: always
@@ -39,9 +41,12 @@ services:
      - node
     volumes:
      - prometheus_data:/data
-     - ./confd/configs/prometheus.yml:/etc/prometheus/prometheus.yml
+     - ./confd/configs/:/etc/prometheus/
      - ./files/prometheus/recording.rules:/etc/prometheus/recording.rules
      - ./files/prometheus/alerting.rules:/etc/prometheus/alerting.rules
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
     ports:
      - 9090:9090
     restart: always
@@ -54,7 +59,7 @@ services:
      - "traefik.enable=true"
      - "traefik.port=9093"
     volumes:
-     - ./confd/configs/alertmanager.yml:/etc/alertmanager/config.yml
+     - ./confd/configs/:/etc/alertmanager/
     command:
      - '--config.file=/etc/alertmanager/config.yml'
      - '--storage.path=/alertmanager'
@@ -65,6 +70,8 @@ services:
   blackbox:
     image: prom/blackbox-exporter
     container_name: blackbox
+    labels:
+     - "traefik.enable=true"
     volumes:
      - ./files/blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml
     ports:
@@ -74,6 +81,8 @@ services:
   node:
     image: prom/node-exporter
     container_name: node
+    labels:
+     - "traefik.enable=true"
     volumes:
      - /proc:/host/proc:ro
      - /sys:/host/sys:ro
@@ -90,6 +99,8 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    labels:
+     - "traefik.enable=true"
     labels:
      - "traefik.frontend.rule=Host:graphs.kebo.io"
      - "traefik.enable=true"

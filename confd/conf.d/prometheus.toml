@@ -1,6 +1,6 @@
 [template]
 src = "prometheus.yml"
-dest = "/etc/confd/configs/prometheus.yml"
+dest = "/etc/confd/configs/prometheus/prometheus.yml"
 keys = [
     "PROMETHEUS_TARGETS",
     "PROMETHEUS_TARGETS_SCRAPE_INTERVAL",
