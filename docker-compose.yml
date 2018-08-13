@@ -5,30 +5,30 @@ version: '3'
 volumes:
     prometheus_data: {}
     grafana_data: {}
-    certificate_data: {}
 
 services:
-
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
+  traefik:
+    image: traefik:1.7-alpine
+    command: --api --docker
+    container_name: traefik
     depends_on:
      - prometheus
      - alertmanager
      - grafana
     volumes:
-     - ./files/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-     - ./files/nginx/sites:/etc/nginx/vhost.d:ro
-     - ./files/nginx/shared:/etc/nginx/snippets:ro
-     - certificate_data:/etc/nginx/certs:ro
+    # - ./files/traefik/traefik.toml:/etc/traefik/traefik.toml:ro
+     - /var/run/docker.sock:/var/run/docker.sock
     ports:
      - 80:80
      - 443:443
+     - 8080:8080
     restart: always
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
+    labels:
+      - "traefik.frontend.rule=Host:stats.kebo.io"
     depends_on:
      - blackbox
      - node
@@ -44,6 +44,8 @@ services:
   alertmanager:
     image: prom/alertmanager
     container_name: alertmanager
+    labels:
+      - "traefik.frontend.rule=Host:alerts.kebo.io"
     volumes:
      - ./confd/configs/alertmanager.yml:/etc/alertmanager/config.yml
     command:
@@ -81,6 +83,8 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    labels:
+      - "traefik.frontend.rule=Host:graphs.kebo.io"
     depends_on:
      - prometheus
     volumes:
@@ -94,5 +98,3 @@ networks:
   default:
     external:
       name: ${NETWORK}
-  
-  
