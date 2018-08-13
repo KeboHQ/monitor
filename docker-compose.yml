@@ -16,19 +16,24 @@ services:
      - alertmanager
      - grafana
     volumes:
-    # - ./files/traefik/traefik.toml:/etc/traefik/traefik.toml:ro
+     - ./files/traefik/traefik.toml:/traefik.toml:ro
+     - ./files/traefik/acme.json:/acme.json
      - /var/run/docker.sock:/var/run/docker.sock
     ports:
      - 80:80
      - 443:443
-     - 8080:8080
+     - "5001:443" # Needed for SNI challenge
+    expose:
+     - "8080"
     restart: always
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     labels:
-      - "traefik.frontend.rule=Host:stats.kebo.io"
+     - "traefik.frontend.rule=Host:stats.kebo.io"
+     - "traefik.enable=true"
+     - "traefik.port=9090"
     depends_on:
      - blackbox
      - node
@@ -45,12 +50,14 @@ services:
     image: prom/alertmanager
     container_name: alertmanager
     labels:
-      - "traefik.frontend.rule=Host:alerts.kebo.io"
+     - "traefik.frontend.rule=Host:alerts.kebo.io"
+     - "traefik.enable=true"
+     - "traefik.port=9093"
     volumes:
      - ./confd/configs/alertmanager.yml:/etc/alertmanager/config.yml
     command:
-      - '-config.file=/etc/alertmanager/config.yml'
-      - '-storage.path=/alertmanager'
+     - '--config.file=/etc/alertmanager/config.yml'
+     - '--storage.path=/alertmanager'
     ports:
      - 9093:9093
     restart: always
@@ -84,7 +91,9 @@ services:
     image: grafana/grafana
     container_name: grafana
     labels:
-      - "traefik.frontend.rule=Host:graphs.kebo.io"
+     - "traefik.frontend.rule=Host:graphs.kebo.io"
+     - "traefik.enable=true"
+     - "traefik.port=3000"
     depends_on:
      - prometheus
     volumes:
