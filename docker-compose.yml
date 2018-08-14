@@ -41,7 +41,7 @@ services:
      - node
     volumes:
      - prometheus_data:/data
-     - ./confd/configs/:/etc/prometheus/
+     - ./confd/configs/prometheus/:/etc/prometheus/
      - ./files/prometheus/recording.rules:/etc/prometheus/recording.rules
      - ./files/prometheus/alerting.rules:/etc/prometheus/alerting.rules
     command:
@@ -59,7 +59,7 @@ services:
      - "traefik.enable=true"
      - "traefik.port=9093"
     volumes:
-     - ./confd/configs/:/etc/alertmanager/
+     - ./confd/configs/alertmanager/:/etc/alertmanager/
     command:
      - '--config.file=/etc/alertmanager/config.yml'
      - '--storage.path=/alertmanager'
