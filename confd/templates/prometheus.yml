@@ -29,6 +29,7 @@ scrape_configs:
     - hera.kebo.io:9100
 
 - job_name: wpdir
+  scheme: https
   static_configs:
   - targets:
     - wpdirectory.net
