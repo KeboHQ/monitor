@@ -31,7 +31,7 @@ scrape_configs:
 - job_name: wpdir
   static_configs:
   - targets:
-    - wpdirectory.net/metrics
+    - wpdirectory.net
 
 - job_name: blackbox
 
