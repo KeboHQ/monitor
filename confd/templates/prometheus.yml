@@ -28,6 +28,11 @@ scrape_configs:
   - targets:
     - hera.kebo.io:9100
 
+- job_name: wpdir
+  static_configs:
+  - targets:
+    - wpdirectory.net/metrics
+
 - job_name: blackbox
 
   scrape_interval: {{getv "/prometheus/targets/scrape/interval"}}

@@ -8,7 +8,7 @@ modules:
       valid_http_versions: ["HTTP/1.1", "HTTP/2"]
       method: "GET"
       headers:
-        Host: hera.kebo.io
+        #Host: hera.kebo.io
       no_follow_redirects: false
       fail_if_ssl: false
       fail_if_not_ssl: false
